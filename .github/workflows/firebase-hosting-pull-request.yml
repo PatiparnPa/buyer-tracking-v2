@@ -8,12 +8,10 @@ jobs:
     if: "${{ github.event.pull_request.head.repo.full_name == github.repository }}"
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
       - uses: actions/checkout@v4
-
-      - name: Use firebase extend
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_BUYER_TRACKING_293E7 }}"
           projectId: buyer-tracking-293e7
+          folder: dist
