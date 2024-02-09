@@ -57,7 +57,7 @@ export const HomePage = () => {
           margin: "0 5%",
         }}
       >
-        <p style={{ fontWeight: "bold", fontSize: "20px" }}>Favorite Food Test deploy</p>
+        <p style={{ fontWeight: "bold", fontSize: "20px" }}>Favorite Food</p>
         <p
           onClick={() => navigate("/favmenu")}
           style={{
