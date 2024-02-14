@@ -35,7 +35,9 @@ export const HomePage = () => {
     // Fetch store data from the API
     const fetchStores = async () => {
       try {
-        const response = await fetch("https://order-api-patiparnpa.vercel.app/stores/");
+        const response = await fetch(
+          "https://order-api-patiparnpa.vercel.app/stores/"
+        );
         const data = await response.json();
         setStores(data);
       } catch (error) {
@@ -57,7 +59,7 @@ export const HomePage = () => {
           margin: "0 5%",
         }}
       >
-        <p style={{ fontWeight: "bold", fontSize: "20px" }}>Favorite Food</p>
+        <p style={{ fontWeight: "bold", fontSize: "20px" }}>Favorite Foodddd</p>
         <p
           onClick={() => navigate("/favmenu")}
           style={{
@@ -121,7 +123,11 @@ export const HomePage = () => {
           {stores.map((store) => (
             <div className="store-card" key={store._id}>
               <p
-                onClick={() => navigate(`/menupage/${store._id}`, { state: { storeName: store.name } })}
+                onClick={() =>
+                  navigate(`/menupage/${store._id}`, {
+                    state: { storeName: store.name },
+                  })
+                }
                 className="store-link"
                 style={{
                   textDecoration: "none",
