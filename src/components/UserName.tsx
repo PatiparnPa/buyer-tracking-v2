@@ -1,18 +1,41 @@
 import { Link } from "react-router-dom";
 import Goback from "../assets/goback.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const UserName = () => {
   const [newName, setNewName] = useState("");
+  const userId = "650bd1a00638ec52b189cb6e";
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewName(e.target.value);
   };
 
-  const handleSaveClick = () => {
-    // Implement your logic to save the new name
-    console.log("Saving new name:", newName);
+  const handleSaveClick = async () => {
+    try {
+      const response = await fetch(
+        `https://order-api-patiparnpa.vercel.app/users/${userId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name: newName }),
+        }
+      );
+
+      if (response.ok) {
+        console.log("Name updated successfully:", newName);
+        setIsSuccess(true); // Update state to show success message
+        // Implement any further actions after successful update
+      } else {
+        console.error("Failed to update name");
+      }
+    } catch (error) {
+      console.error("Error updating name:", error);
+    }
   };
+
   return (
     <>
       <div
@@ -51,7 +74,13 @@ export const UserName = () => {
           onChange={handleInputChange}
           placeholder="New Name"
           className="user-input"
+          required
         />
+        {isSuccess && (
+        <div style={{ marginLeft: "10px" }}>
+          <div>Name updated successfully!</div>
+        </div>
+      )}
         <button onClick={handleSaveClick} className="save-button">
           Save
         </button>

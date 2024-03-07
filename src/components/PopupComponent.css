@@ -39,6 +39,19 @@
     font-size: 24px;
     color: #333;
   }
+
+  .to-order-page-button {
+    margin-left: -16%;
+    width: 130%;
+    height: 44px;
+    background-color: #2357A5;
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+  }
   
   @keyframes fadeIn {
     from {
