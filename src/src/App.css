@@ -1,0 +1,568 @@
+.app-bar {
+  background-color: #2357A5;
+  color: #FFFFFF;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  height: 60px;
+}
+.app-bar h1 {
+  margin: 0;
+}
+
+
+.custom-heading {
+  padding-left: 16px;
+  padding-bottom: 12px;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+/* HomePage.css */
+
+.scroll-container {
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 10px; /* Adjust as needed */
+  margin-top: -4%;
+  max-width: 100%; /* Set a maximum width */
+  height: 100%;
+}
+
+
+
+.food-card {
+  flex: 0 0 auto;
+  margin-right: 10px; /* Adjust spacing between cards */
+  text-align: center;
+  border: 2px solid #ddd;
+  width: 161px;
+  height: 250px;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+
+.food-card img {
+  width: 100%; /* Adjust the image size as needed */
+  height: 63%; /* Adjust the image size as needed */
+  border-radius: 8px 8px 0 0; /* Make the image round (optional) */
+}
+
+
+.food-card p {
+  margin: 5px 0; /* Add some margin to the paragraphs */
+  text-align: left;
+  max-width: 100%;
+  white-space: normal;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+
+.food-card p:first-child { 
+  font-size: 16px; /* Adjust the font size as needed */
+}
+
+
+.food-card p:last-child { 
+  padding-bottom: 5%;
+}
+
+.store-link {
+  text-decoration: none; /* Remove default Link underline */
+  color: inherit; /* Inherit color from parent */
+}
+
+.store-link2 {
+  text-decoration: none; /* Remove default Link underline */
+  color: inherit; /* Inherit color from parent */
+}
+
+/* Update the styles for store container */
+.store-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* Style for individual store card */
+.store-card {
+  box-sizing: border-box;
+  margin-bottom: 20px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  padding: -30px;
+  text-align: center;
+  height: 210px;
+  width: calc(50% - 10px);
+}
+
+.store-card img {
+  width: 100%;
+  height: 150px;
+  border-radius: 10px 10px 0 0;
+  margin-bottom: 8px;
+}
+
+.store-card p {
+  font-weight: bold;
+  font-size: 18px;
+  margin: 4px;
+}
+/* RestaurantCard.css */
+.restaurant-card-container {
+  
+  padding-top: 3%;
+  display: flex;
+  overflow-x: auto; /* Enable horizontal scrolling */
+}
+
+.restaurant-card-wrapper {
+  display: flex;
+  flex-direction: row; /* Display cards in a row */
+  flex-wrap: nowrap; /* Prevent cards from wrapping to the next line */
+  gap: 0%; /* Adjust the gap between cards */
+
+}
+
+.restaurant-card {
+  flex: 0 0 auto; /* Maintain original card width */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: -15%; /* Adjust the margin between cards */
+  margin-left: -5%;
+}
+
+.restaurant-image {
+  max-width: 60%; /* Adjust the image size */
+  max-height: 100px; /* Set a maximum height for the image */
+}
+
+.restaurant-details {
+  text-align: center;
+}
+
+
+/* Add these styles to your CSS file */
+
+.tab-bar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #f0f0f0;
+  height: 51px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+body {
+  padding-top: 80px; /* Adjust this value based on the height of your app bar */
+}
+
+.tab-item {
+  text-decoration: none;
+  color: #333;
+  text-align: center;
+  padding: 13px;
+  flex: 1;
+  font-size: 16px;
+  font-weight: bold;
+  border: solid 1px #C4C4C4;
+}
+
+.active {
+  background-color: #2357a5; /* Set the background color for the active tab */
+  color: #fff; /* Set the text color for the active tab */
+}
+
+/* OrderDetailBox.css */
+.my-order-detail-box {
+  display: flex;
+  border: 1px solid #ddd;
+  padding: 18px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.my-order-shop {
+  font-size: 16px;
+  font-weight: bold;
+
+}
+
+.my-order-date,
+.my-order-status {
+  font-size: 14px;
+  margin-top: 5px;
+
+}
+
+
+.menu-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+   /* Distribute items evenly */
+}
+
+.menu-card {
+  width: calc(50% - 1rem); /* Two items per row with spacing */
+  margin-bottom: 1rem; /* Add spacing between rows */
+  border: 1px solid #ddd; /* Add border to each menu card */
+  padding: 1rem; /* Add padding for spacing inside the card */
+  /* Add styles for the menu card */
+}
+
+.menu-img1 {
+  width: 100%; /* Allow images to take full width of menu card */
+  max-height: 100px; /* Set a maximum height for the images */
+  object-fit: cover; /* Maintain aspect ratio and cover the entire area */
+}
+
+/* SelectMenuFeature.css */
+.menu-container {
+  display:block ;
+  align-items: center; /* Vertically center the content */
+  margin-bottom: 0px; /* Adjust as needed */
+  margin-top: -5%;
+}
+
+.menu-image-container {
+  width: 100%; /* Set your desired fixed width */
+  height: 209px; /* Set your desired fixed height */
+  margin-right: 10px; /* Adjust as needed */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden; /* Ensure the image doesn't overflow */
+}
+
+.menu-img {
+  width: 100%;
+  height: 100%;
+  object-fit:cover; /* Maintain aspect ratio and cover the container */
+}
+
+.menu-container-details {
+  flex: 1; /* Allow menu details to expand and fill available space */
+  border: 10px;
+}
+
+.menu-details-content {
+  border: 1px solid #ddd; /* Add border to the container */
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  align-items: center; /* Vertically center the content */
+}
+.menu-price {
+  margin-left: auto; /* Push the price to the right */
+  font-size: 16px;
+}
+
+.menu-form-detail {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column; /* Stack children in a column */
+  align-items: stretch; /* Stretch children to container width */
+  margin-top: 5px;
+}
+
+.menu-input {
+  padding: 6px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  margin-bottom: 10px; /* Add spacing between input field and buttons */
+  width: 100%;
+  height: 44px;
+}
+
+.menu-buttons {
+  display: flex;
+  justify-content: space-between; /* Space buttons evenly */
+}
+
+.menu-button {
+  flex: 1;
+  padding: 6px;
+  background-color: #2357A5;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-right: 5px; /* Add spacing between buttons */
+  margin-top: 10%;
+  width: 100%;
+  height: 56px;
+}
+
+.menu-radio-row {
+  font-weight: bold;
+}
+
+.menu-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.menu-card {
+  width: 48%; /* Display two items per row with a small gap between */
+  margin-bottom: 1rem;
+  /* Add any other styles for the menu card */
+}
+
+.menu-title {
+  font-size: 18px;
+}
+
+.user-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  padding: 20px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.user-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.orange {
+  width: "300px";
+  height: "57px";
+  top: "736px";
+  left: "37px";
+  color: "white";
+  border: "none";
+  cursor: "pointer";
+  display: "flex";
+}
+
+/* Add these styles to center the login components and style the button */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 80vh; /* Full height of the viewport */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.logo {
+  width: 300px; /* Adjust the width as needed */
+  height: 300px; /* Adjust the height as needed */
+  margin-top: 15%;
+  margin-right: 15px;
+  margin-bottom: -10%;
+}
+
+.login-button {
+  position: static;
+  background-color: #2357a5;
+  color: #fff;
+  width: 100%;
+  padding: 16px 70px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.menus-card {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px; /* Adjust spacing between rows */
+  text-align: left;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-sizing: border-box; /* Include borders in calculations */
+  height: 255px;
+  justify-content: space-between;
+  width: calc(50% - 10px);
+}
+
+
+.menus-card img {
+  width: 100%; /* Ensure images don't exceed the container width */
+  height: 161px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.menus-card p {
+  margin: 5px 0; /* Adjust spacing between text elements */
+  max-width: 100%;
+  white-space: normal;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.menus-card button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.menus-card p:first-child {
+  font-size: 16px;
+}
+.menus-card p:last-child {
+  padding-bottom: 5%;
+}
+
+.menu-amount-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-amount-option button {
+  background: none;
+  border: 1px solid black;
+  cursor: pointer;
+  width: 46px;
+  height: 46px;
+  margin: 0 15px;
+  font-size: 24px;
+  border-radius: 10px;
+}
+
+.menu-amount-option p {
+  margin: 0 10px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+
+.user-profile-container {
+  margin-top: -5%;
+}
+
+.profile-item {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #ddd;
+  padding: 24px 20px 24px 20px;
+  align-items: center;
+}
+
+.label {
+  font-size: 18px;
+  font-family: prompt;
+  font-weight: 500;
+}
+
+body {
+  font-family: prompt;
+}
+
+.user-input-container {
+  padding: 20px;
+}
+
+.user-input {
+  width: 100%;
+  height: 44px;
+  border-radius: 10px;
+  border: 2px solid #ddd;
+  padding: 10px;
+  font-size: 18px;
+  /* Add other input styles as needed */
+}
+
+.save-button {
+  background-color: #2357A5;
+  width: 100%;
+  height: 56px;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  margin-top: 125%;
+}
+
+.order-container {
+  margin-top: -5%;
+}
+
+.order-item {
+  display: flex;
+  border: 1px solid #ddd;
+  padding: 18px;
+  align-items: center;
+}
+
+.left-content {
+  flex: 1; /* Takes up the available space */
+  flex-shrink: 0;
+}
+
+.right-content {
+  text-align: right;
+  display: flex;
+  align-items: center;
+}
+
+.center-content {
+  flex: 1;
+  text-align: left;
+}
+
+.order-summary-queue {
+  width: 100%;
+  height: 240px;
+  border:solid 1px #ddd;
+  padding: 24px 0px 48px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  margin-bottom: 4%;
+}
+
+
+.upload-slip-container {
+  margin-top: -20px;
+  text-align: center;
+}
+
+.button-overlay {
+  background-color: #FF3A3A;
+  color: white;
+  width: 95%;
+  border: none;
+  height: 56px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
