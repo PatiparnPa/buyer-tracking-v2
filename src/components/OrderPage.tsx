@@ -40,6 +40,7 @@ const OrderPage: React.FC = () => {
       </div>
       <RecentOrder></RecentOrder>
       <br></br>
+      <br></br>
       <TabBar></TabBar>
     </div>
   );

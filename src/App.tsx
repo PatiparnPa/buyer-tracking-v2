@@ -16,19 +16,206 @@ import { OrderDetail } from "./components/OrderDetail";
 import { ConfirmOrder } from "./components/ConfirmOrder";
 import { UploadSlip } from "./components/UploadSlip";
 import { UploadSlip2 } from "./components/UploadSlip2";
+import React, { useState, useEffect } from "react";
+import PopupComponent from "./components/PopupComponent";
+import { usePopup } from "./components/PopupContext";
+import Pot from "./assets/pot-removebg-preview.png";
+import { useNavigate } from "react-router-dom";
+
+// Define the Order interface
+interface Order {
+  _id: string;
+  userID: string;
+  storeID: string;
+  amount: number;
+  storeName: string; // New property for store name
+  queueNumber: string;
+}
 
 function App() {
+  const userId = "650bd1a00638ec52b189cb6e";
+  const { isPopupOpen, openPopup, closePopup } = usePopup();
+
+  const navigate = useNavigate();
+
+  const handleGoToOrderPage = (orderId: string, storeName: string) => {
+    closePopup()
+    navigate(`/orderdetail/${orderId}`, {
+      state: { storeName: storeName }
+    });
+  };
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch(
+          `https://order-api-patiparnpa.vercel.app/orders/user/${userId}/ready`
+        );
+        if (response.ok) {
+          const data: Order[] = await response.json();
+          if (data.length > 0) {
+            const storeId = data[0].storeID;
+            if (storeId) {
+              // Fetch store details using storeId
+              const storeResponse = await fetch(
+                `https://order-api-patiparnpa.vercel.app/stores/${storeId}`
+              );
+              if (storeResponse.ok) {
+                const storeData = await storeResponse.json();
+
+                // Add storeName to the first order
+                data[0].storeName = storeData.name;
+              } else {
+                console.error(
+                  "Failed to fetch store details:",
+                  storeResponse.statusText
+                );
+              }
+
+              // Fetch queue number using orderId
+              const queueResponse = await fetch(
+                `https://order-api-patiparnpa.vercel.app/queues/order/${data[0]._id}`
+              );
+              if (queueResponse.ok) {
+                const queueData = await queueResponse.json();
+
+                // Add queueNumber to the first order
+                data[0].queueNumber = queueData[0]?.queueNumber ?? "Unknown";
+              } else {
+                console.error(
+                  "Failed to fetch queue number:",
+                  queueResponse.statusText
+                );
+              }
+            } else {
+              console.error("StoreId is undefined");
+            }
+            console.log("data", data);
+            
+            openPopup(
+              <div>
+                <img src={Pot} style={{ width: "170px" }}></img>
+                <p style={{ fontSize: "51px", fontWeight: "bolder" }}>
+                  {data[0]?.queueNumber}
+                </p>
+                <p style={{ fontWeight: "600", fontSize: "18px" }}>
+                  Your Order is done!!
+                </p>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    fontWeight: "400",
+                    fontSize: "16px",
+                    color: "#000000",
+                  }}
+                >
+                  <p style={{ margin: 0 }}>{data[0]?.storeName}</p>
+                  <p>{data[0]?.amount} Bath</p>
+                </div>
+                <br></br>
+                <button
+                  className="to-order-page-button"
+                  onClick={() => handleGoToOrderPage(data[0]?._id, data[0]?.storeName)}
+                >
+                  Go to order Page
+                </button>
+              </div>
+            );
+          }
+        } else {
+          console.error("Failed to fetch orders:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+
+      
+    };
+
+    
+
+    let intervalId = setInterval(fetchOrders, 1500000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [userId, openPopup]);
+
+  
+ 
+ 
+  useEffect(() => {
+    let isMounted = true;
+
+    const checkBasket = async () => {
+      try {
+        const response = await fetch(
+          `https://order-api-patiparnpa.vercel.app/baskets/user/${userId}`
+        );
+
+        if (isMounted) {
+          if (response.ok) {
+            // User already has a basket
+          } else if (response.status === 404) {
+            // Basket not found, create a new one
+            const createBasketResponse = await fetch(
+              "https://order-api-patiparnpa.vercel.app/baskets/create",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  userID: userId,
+                  items: {},
+                }),
+              }
+            );
+
+            if (createBasketResponse.ok) {
+              console.log("Basket created successfully");
+            } else {
+              console.error(
+                "Error creating basket:",
+                createBasketResponse.statusText
+              );
+            }
+          } else {
+            console.error("Error checking basket:", response.statusText);
+          }
+        }
+      } catch (error) {
+        if (isMounted) {
+          console.error("Error checking basket:", error);
+        }
+      }
+    };
+
+    // Call checkBasket
+    checkBasket();
+
+    // Cleanup function
+    return () => {
+      isMounted = false;
+    };
+  }, [userId]); // Dependency array with userId
+
   return (
     <div>
       <GlobalStyles></GlobalStyles>
+      {isPopupOpen && <PopupComponent onClose={closePopup} />}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/order" element={<OrderPage />} />
         <Route path="/profile" element={<UserProfilePage></UserProfilePage>} />
-        <Route path="/menufea1" element={<SelectMenuFeature />} />
+        <Route path="/menufea1/:storeId" element={<SelectMenuFeature />} />
         <Route path="/menufea2/:menuId" element={<SelectMenuFeature2 />} />
         <Route path="/userlogin" element={<UserLogin></UserLogin>}></Route>
-        <Route path="/menupage/:storeId" element={<MenuPage></MenuPage>}></Route>
+        <Route
+          path="/menupage/:storeId"
+          element={<MenuPage></MenuPage>}
+        ></Route>
         <Route
           path="/favmenu"
           element={<FavoriteMenus></FavoriteMenus>}
@@ -37,12 +224,18 @@ function App() {
         <Route path="/mycart" element={<MyCart></MyCart>}></Route>
         <Route path="/yee" element={<AnyComponent></AnyComponent>}></Route>
         <Route
-          path="/orderdetail"
+          path="/orderdetail/:orderId"
           element={<OrderDetail></OrderDetail>}
         ></Route>
-        <Route path='/confirmorder' element={<ConfirmOrder></ConfirmOrder>}></Route>
-        <Route path='/slip' element={<UploadSlip></UploadSlip>}></Route>
-        <Route path='/slip2' element={<UploadSlip2></UploadSlip2>}></Route>
+        <Route
+          path="/confirmorder/:storeId"
+          element={<ConfirmOrder></ConfirmOrder>}
+        ></Route>
+        <Route
+          path="/slip/:storeId"
+          element={<UploadSlip></UploadSlip>}
+        ></Route>
+        <Route path="/slip2" element={<UploadSlip2></UploadSlip2>}></Route>
       </Routes>
     </div>
   );

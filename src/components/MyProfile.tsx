@@ -3,8 +3,34 @@ import Cart2 from "../assets/cart2.png";
 import { Link } from 'react-router-dom';
 import Logout from "../assets/logout.jpg";
 import GoNext from "../assets/yeet.jpg";
+import React, { useEffect, useState } from 'react';
+import { UserName } from "./UserName";
 
 export const UserProfilePage = () => {
+  const userId = '650bd1a00638ec52b189cb6e'
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      try {
+        const response = await fetch(`https://order-api-patiparnpa.vercel.app/users/${userId}`);
+        if (response.ok) {
+          const userData = await response.json();
+          setUserName(userData.name);
+        } else {
+          console.error('Failed to fetch user name');
+        }
+      } catch (error) {
+        console.error('Error fetching user name:', error);
+      }
+    };
+
+    fetchUserName();
+  }, [userId]);
+
+  const handleLogout = () => {
+    console.log('the logout button was click')
+  }
   return (
     <>
       <div
@@ -36,7 +62,7 @@ export const UserProfilePage = () => {
         <p style={{fontSize:'20px', fontWeight:'bold', padding:'20px', paddingBottom:'10px', fontFamily:'prompt'}}>Personal Information</p>
         <div className="profile-item" style={{alignItems:'center'}}>
           <div className="label">Display Name</div>
-          <Link to='/name' style={{textDecoration:'none'}}><div style={{fontSize:'18px'}}>Peter Johnson</div></Link>
+          <Link to='/name' style={{textDecoration:'none'}}><div style={{fontSize:'18px'}}>{userName}</div></Link>
         </div>
         <div className="profile-item">
           <div className="label">Edit Favorite Menu</div>
@@ -47,7 +73,7 @@ export const UserProfilePage = () => {
           <Link to='/order' className="link"><img src={GoNext} alt="link" style={{width:'30px', height:'30px'}}></img></Link>
         </div>
         <div className="profile-item">
-          <button style={{border:'none', background:'none', fontSize:'18px'}}><img src={Logout}></img>  Logout</button>
+          <button onClick={handleLogout} style={{border:'none', background:'none', fontSize:'18px'}}><img src={Logout}></img>  Logout</button>
         </div>
       </div>
       <TabBar></TabBar>

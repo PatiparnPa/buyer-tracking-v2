@@ -1,14 +1,43 @@
 import { useNavigate } from "react-router-dom";
 import Goback from "../assets/goback.png";
+import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+
+interface StoreDetail {
+  qr_img_url: string;
+  store_img_url: string;
+}
 
 export const UploadSlip = () => {
   const navigate = useNavigate();
+  const { storeId } = useParams<{ storeId: string }>();
+  const [storeDetail, setStoreDetail] = useState<StoreDetail | null>(null);
+
+  useEffect(() => {
+    const fetchStoreDetail = async () => {
+      try {
+        const response = await fetch(
+          `https://order-api-patiparnpa.vercel.app/stores/${storeId}`
+        );
+        if (response.ok) {
+          const data: StoreDetail = await response.json();
+          setStoreDetail(data);
+        } else {
+          console.error("Failed to fetch store detail");
+        }
+      } catch (error) {
+        console.error("Error fetching store detail:", error);
+      }
+    };
+
+    fetchStoreDetail();
+  }, [storeId]);
 
   const handleGoBack = () => {
     navigate(-1); // Navigate back
   };
 
-  const qrCodeUrl = 'https://i.ytimg.com/vi/fBb5l2jmQhQ/maxresdefault.jpg'; // Replace with the actual URL
+  const qrCodeUrl = storeDetail?.store_img_url || ''; // Use the fetched qr_img_url
 
   const handleSave = async () => {
     try {
@@ -17,9 +46,6 @@ export const UploadSlip = () => {
   
       if (img) {
         console.log('Image element found.');
-  
-        // Set the crossOrigin attribute
-        img.crossOrigin = 'anonymous';
   
         // Create a canvas element
         const canvas = document.createElement('canvas');
@@ -33,7 +59,7 @@ export const UploadSlip = () => {
           canvas.height = img.height;
   
           // Draw the image onto the canvas
-          context.drawImage(img, 0, 0);
+          context.drawImage(img, 0, 0, img.width, img.height);
   
           // Convert the canvas content to a data URL
           const dataUrl = canvas.toDataURL('image/png');
@@ -56,6 +82,7 @@ export const UploadSlip = () => {
       console.error('Error saving image:', error);
     }
   };
+  
   
   
   

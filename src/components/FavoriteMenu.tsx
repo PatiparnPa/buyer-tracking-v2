@@ -1,13 +1,40 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Goback from "../assets/goback.png";
 import Redbin from "../assets/redbin.png";
 import Cart from "../assets/cart.jpg";
 import Logo from "../assets/logo.jpg";
 
-export const FavoriteMenus = () => {
+interface BasketItem {
+  productID: string;
+  quantity: number;
+  orderDetail: string;
+}
+
+interface FavoriteFood {
+  id: string;
+  name: string;
+  image: string;
+  tag: string;
+  price: number;
+}
+
+interface MenuItem {
+  id: string;
+  name: string;
+  image: string;
+  tag: string;
+  price: number;
+  store_id: string;
+}
+
+export const FavoriteMenus: React.FC = () => {
   const navigate = useNavigate();
   const [isManageMode, setIsManageMode] = useState(false);
+  const [favoriteFoods, setFavoriteFoods] = useState<MenuItem[]>([]);
+  const userId = '650bd1a00638ec52b189cb6e'
+  const basketId = '65d41851de12ac5fdff1066c'
+  const favoriteId = '65bca8ca326487d502199ce3'
 
   const handleGoBack = () => {
     navigate(-1); // Navigate back
@@ -37,33 +64,189 @@ export const FavoriteMenus = () => {
     zIndex: 999,
   };
 
-  const FavMenus = [
-    {
-      id: 1,
-      name: "กระเพราหมูกรอบไข่ดาว",
-      price: 50,
-      image: "https://i.ytimg.com/vi/fBb5l2jmQhQ/maxresdefault.jpg",
-    },
-    {
-      id: 2,
-      name: "กระเพราหมูกรอบไข่ดาว 2 ฟอง",
-      price: 70,
-      image: "https://i.ytimg.com/vi/fBb5l2jmQhQ/maxresdefault.jpg",
-    },
-    {
-      id: 3,
-      name: "กระเพราหมูกรอบไข่ดาว 20 ฟอง",
-      price: 50,
-      image: "https://i.ytimg.com/vi/fBb5l2jmQhQ/maxresdefault.jpg",
-    },
-    {
-      id: 4,
-      name: "กระเพราหมูกรอบไข่ดาวยาราไนก้า",
-      price: 100,
-      image: "https://i.ytimg.com/vi/fBb5l2jmQhQ/maxresdefault.jpg",
-    },
-    // ... your menu data
-  ];
+  const addToCart = async (menuItem: MenuItem) => {
+    try {
+      const basketUrl = `https://order-api-patiparnpa.vercel.app/baskets/${basketId}`;
+
+      // Fetch existing basket data
+      const response = await fetch(basketUrl);
+      if (!response.ok) {
+        throw new Error("Error fetching basket data");
+      }
+      const basketData = await response.json();
+      const items = basketData?.items || {};
+
+      // Extract existing items for the specified store_id or initialize an empty array
+      const existingItemsForStore = items[menuItem.store_id] || [];
+
+      // Check if the product already exists in the basket
+      const existingProductIndex = existingItemsForStore.findIndex(
+        (item: BasketItem) => item.productID === menuItem.id
+      );
+
+      let updatedItems;
+
+      if (existingProductIndex !== -1) {
+        // If the product already exists, update its quantity
+        updatedItems = {
+          ...items,
+          [menuItem.store_id]: [
+            ...existingItemsForStore.slice(0, existingProductIndex),
+            {
+              ...existingItemsForStore[existingProductIndex],
+              quantity: existingItemsForStore[existingProductIndex].quantity + 1,
+            },
+            ...existingItemsForStore.slice(existingProductIndex + 1),
+          ],
+        };
+      } else {
+        // If the product doesn't exist, add it as a new item
+        updatedItems = {
+          ...items,
+          [menuItem.store_id]: [
+            ...existingItemsForStore,
+            {
+              productID: menuItem.id,
+              quantity: 1,
+              orderDetail: '',
+            },
+          ],
+        };
+      }
+
+      // Update the basket with the new item
+      const putResponse = await fetch(basketUrl, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          items: updatedItems,
+        }),
+      });
+
+      if (!putResponse.ok) {
+        throw new Error("Error updating basket data");
+      }
+
+      console.log("Item added to cart successfully!");
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchFavoriteFoods = async () => {
+      try {
+        const userId = "650bd1a00638ec52b189cb6e";
+        const response = await fetch(
+          `https://order-api-patiparnpa.vercel.app/favorite_products/user/${userId}`
+        );
+
+        if (response.ok) {
+          const favoriteProducts = await response.json();
+
+          const productIDs = favoriteProducts[0]?.productIDs || [];
+
+          const productDetailsPromises = productIDs.map(
+            async (productId: string) => {
+              try {
+                const productResponse = await fetch(
+                  `https://order-api-patiparnpa.vercel.app/products/${productId}`
+                );
+
+                if (productResponse.ok) {
+                  const productData = await productResponse.json();
+
+                  return {
+                    id: productData._id,
+                    name: productData.name,
+                    image: productData.product_img_url,
+                    tag: productData.product_tag,
+                    price: productData.price,
+                    store_id: productData.store_id
+                  };
+                } else {
+                  console.error(
+                    "Error fetching product details:",
+                    productResponse.statusText
+                  );
+                  return null;
+                }
+              } catch (error) {
+                console.error("Error fetching product details:", error);
+                return null;
+              }
+            }
+          );
+
+          const productDetails = await Promise.all(productDetailsPromises);
+          const filteredProductDetails = productDetails.filter(
+            Boolean
+          ) as MenuItem[];
+
+          setFavoriteFoods(filteredProductDetails);
+        } else {
+          console.error(
+            "Error fetching favorite products:",
+            response.statusText
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching favorite products:", error);
+      }
+    };
+
+    fetchFavoriteFoods();
+  }, []);
+
+  const removeFromFavorites = async (favoriteProductId: string) => {
+    try {
+      // Fetch the favorite products data
+      const response = await fetch(
+        `https://order-api-patiparnpa.vercel.app/favorite_products/${favoriteId}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch favorite products data");
+      }
+      const favoriteProductsData = await response.json();
+  
+      // Remove the specified productId from the productIDs array
+      const updatedProductIDs = favoriteProductsData.productIDs.filter(
+        (productId: string) => productId !== favoriteProductId
+      );
+  
+      // Update the favorite products data on the server
+      const putResponse = await fetch(
+        `https://order-api-patiparnpa.vercel.app/favorite_products/${favoriteId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...favoriteProductsData,
+            productIDs: updatedProductIDs,
+          }),
+        }
+      );
+  
+      if (!putResponse.ok) {
+        throw new Error("Failed to update favorite products data on the server");
+      }
+  
+      // Update the UI after successful removal
+      setFavoriteFoods((prevFavoriteFoods) =>
+        prevFavoriteFoods.filter((food) => food.id !== favoriteProductId)
+      );
+  
+      console.log("Menu removed from favorites successfully!");
+    } catch (error) {
+      console.error("Error removing menu from favorites:", error);
+    }
+  };
+  
+  
 
   return (
     <>
@@ -102,14 +285,14 @@ export const FavoriteMenus = () => {
         </div>
       </div>
       <div className="store-container">
-        {FavMenus.length === 0 ? (
+        {favoriteFoods.length === 0 ? (
           <p style={{ textAlign: "center", marginTop: "20px" }}>
             User does not have favorite menu.
           </p>
         ) : (
-          FavMenus.map((menu) => (
+          favoriteFoods.map((food) => (
             <div
-              key={menu.id}
+              key={food.id}
               className="menus-card"
               style={{
                 marginLeft: "5px",
@@ -128,16 +311,16 @@ export const FavoriteMenus = () => {
                 ></button>
               ) : (
                 <div
-                  onClick={() => navigate("/menufea2")}
+                  onClick={() => navigate(`/menufea2/${food.id}`)}
                   className="store-link"
                   style={{ cursor: "pointer" }}
                 >
-                  <img src={menu.image} alt={menu.name}/>
-                  <p>{menu.name}</p>
+                  <img src={food.image} alt={food.name} />
+                  <p>{food.name}</p>
                   <div
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <p>{menu.price} บาท</p>
+                    <p>{food.price} บาท</p>
                     <button
                       style={{
                         background: "none",
@@ -147,7 +330,7 @@ export const FavoriteMenus = () => {
                       }}
                       onClick={(e) => {
                         e.stopPropagation();
-                        console.log("Button clicked!");
+                        addToCart(food);
                       }}
                     >
                       <img
@@ -164,7 +347,7 @@ export const FavoriteMenus = () => {
                   style={overlayStyles}
                   onClick={(e) => {
                     e.stopPropagation();
-                    console.log("Overlay clicked");
+                    removeFromFavorites(food.id);
                   }}
                 >
                   <img
@@ -188,4 +371,3 @@ export const FavoriteMenus = () => {
     </>
   );
 };
-

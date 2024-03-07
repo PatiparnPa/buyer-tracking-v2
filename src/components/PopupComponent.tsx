@@ -42,18 +42,7 @@ const getDefaultContent = () => (
     </div>
     <br></br>
     <button
-      style={{
-        marginLeft:'-16%',
-        width: "130%",
-        height: "44px",
-        backgroundColor: "#2357A5",
-        color: "#FFFFFF",
-        fontWeight: "bold",
-        fontSize: "16px",
-        cursor:'pointer',
-        border:'none',
-        borderRadius:'10px'
-      }}
+      className="to-order-page-button"
     >
       Go to order Page
     </button>
