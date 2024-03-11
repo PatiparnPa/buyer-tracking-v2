@@ -1,7 +1,7 @@
 import "./App.css";
 import { HomePage } from "./components/HomePage";
 import OrderPage from "./components/OrderPage";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { UserProfilePage } from "./components/MyProfile";
 import { SelectMenuFeature } from "./components/SelectMenuFeature";
 import { SelectMenuFeature2 } from "./components/SelectMenuFeature2";
@@ -141,62 +141,6 @@ function App() {
     };
   }, [userId, openPopup]);
 
-  useEffect(() => {
-    let isMounted = true;
-
-    const checkBasket = async () => {
-      try {
-        const response = await fetch(
-          `https://order-api-patiparnpa.vercel.app/baskets/user/${userId}`
-        );
-
-        if (isMounted) {
-          if (response.ok) {
-            // User already has a basket
-          } else if (response.status === 404) {
-            // Basket not found, create a new one
-            const createBasketResponse = await fetch(
-              "https://order-api-patiparnpa.vercel.app/baskets/create",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  userID: userId,
-                  items: {},
-                }),
-              }
-            );
-
-            if (createBasketResponse.ok) {
-              console.log("Basket created successfully");
-            } else {
-              console.error(
-                "Error creating basket:",
-                createBasketResponse.statusText
-              );
-            }
-          } else {
-            console.error("Error checking basket:", response.statusText);
-          }
-        }
-      } catch (error) {
-        if (isMounted) {
-          console.error("Error checking basket:", error);
-        }
-      }
-    };
-
-    // Call checkBasket
-    checkBasket();
-
-    // Cleanup function
-    return () => {
-      isMounted = false;
-    };
-  }, [userId]); // Dependency array with userId
-
   return (
     <div>
       <GlobalStyles></GlobalStyles>
@@ -233,6 +177,17 @@ function App() {
         ></Route>
         <Route path="/slip2" element={<UploadSlip2></UploadSlip2>}></Route>
         <Route path="/load" element={<Loading></Loading>}></Route>
+        <Route
+          path="*"
+          element={
+            localStorage.getItem("accessToken") ? (
+              <Navigate to="/" />
+            ) : (
+              <Navigate to="/userlogin" />
+            )
+          }
+        />
+
       </Routes>
     </div>
   );
