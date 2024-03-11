@@ -13,6 +13,7 @@ export const Loading = () => {
       try {
         const userDataString = localStorage.getItem("userLineData");
         if (userDataString) {
+          console.log("userdatastring", userDataString);
           const userData = JSON.parse(userDataString);
           setUserLineData(userData);
 
