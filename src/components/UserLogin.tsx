@@ -6,31 +6,13 @@ import liff from "@line/liff"; // Import LIFF library
 export const UserLogin = () => {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Initialize LIFF and check if the user is logged in
-    async function initializeLIFF() {
-      try {
-        await liff.init({ liffId: "2000210581-wLmA5Enp" }); // Replace with your LIFF ID
-        if (liff.isLoggedIn()) {
-          // User is already logged in, fetch user data and navigate to the desired page
-          const profile = await liff.getProfile();
-          const userLineData = {
-            userLineId: profile.userId,
-            userLineName: profile.displayName,
-          };
-          localStorage.setItem("userLineData", JSON.stringify(userLineData));
-          navigate('/load'); // Navigate to the desired page after saving user data
-        }
-      } catch (error) {
-        console.error("Error initializing LIFF:", error);
-      }
+  const handleLogin = async () => {
+    try {
+      await liff.init({ liffId: "2000210581-wLmA5Enp" }); // Replace with your LIFF ID
+      await liff.login();
+    } catch (error) {
+      console.error("Error logging in with LINE:", error);
     }
-    initializeLIFF();
-  }, [navigate]);
-
-  const handleLogin = () => {
-    // Open the LINE Login window
-    liff.login();
   };
 
   return (
