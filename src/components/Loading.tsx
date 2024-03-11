@@ -14,7 +14,7 @@ export const Loading = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const userDataString = sessionStorage.getItem("userLineData");
+        const userDataString = localStorage.getItem("userLineData");
         if (userDataString) {
           const userData = JSON.parse(userDataString);
           setUserLineData(userData);
