@@ -18,6 +18,7 @@ export const UserLogin = () => {
           userLineName: profile.displayName,
         };
         localStorage.setItem("userLineData", JSON.stringify(userLineData));
+        navigate('/load')
       }
     }
     initializeLIFF();
