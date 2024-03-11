@@ -48,6 +48,7 @@ export const Loading = () => {
                 name: userData.userLineName,
                 basketID: "",
                 favorite_productID: "",
+                status:"open"
               }),
             });
 
@@ -59,7 +60,7 @@ export const Loading = () => {
               const createBasketResponse = await fetch("https://order-api-patiparnpa.vercel.app/baskets/create", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ userID: userId }),
+                body: JSON.stringify({ userID: userId, items: {} }),
               });
 
               if (createBasketResponse.ok) {
