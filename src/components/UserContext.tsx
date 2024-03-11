@@ -1,18 +1,42 @@
 // UserContext.tsx
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { jwtDecode } from "jwt-decode";
+
 
 interface UserContextProps {
   userId: string | null;
-  setUserId: (id: string | null) => void;
+  basketId: string | null;
+  favoriteId: string | null;
 }
+
 
 const UserContext = createContext<UserContextProps | undefined>(undefined);
 
 const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [userId, setUserId] = useState<string | null>(null);
+  const [userData, setUserData] = useState<UserContextProps>({ userId: null, basketId: null, favoriteId: null });
+
+  useEffect(() => {
+    // Retrieve access token from local storage (or wherever it's stored)
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken) {
+      try {
+        // Decode the access token
+        const decodedToken: { [key: string]: any } = jwtDecode(accessToken);
+
+        // Extract user-related data from the decoded token
+        const { userId, basketId, favoriteId } = decodedToken;
+
+        // Update the user context with the extracted data
+        setUserData({ userId, basketId, favoriteId });
+      } catch (error) {
+        console.error('Error decoding access token:', error);
+      }
+    }
+  }, []);
 
   return (
-    <UserContext.Provider value={{ userId, setUserId }}>
+    <UserContext.Provider value={userData}>
       {children}
     </UserContext.Provider>
   );

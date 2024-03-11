@@ -389,7 +389,7 @@ body {
   width: 100%;
   padding: 16px 70px;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
 }
@@ -565,4 +565,29 @@ body {
   border-radius: 10px;
   font-size: 18px;
   font-weight: bold;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 75vh;
+}
+
+.loading-spinner {
+  border: 8px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #333; /* Adjust the color as needed */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 1s linear infinite;
+  opacity: 50%;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  to {
+      transform: rotate(360deg);
+  }
 }

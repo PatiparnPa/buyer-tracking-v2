@@ -21,6 +21,7 @@ import PopupComponent from "./components/PopupComponent";
 import { usePopup } from "./components/PopupContext";
 import Pot from "./assets/pot-removebg-preview.png";
 import { useNavigate } from "react-router-dom";
+import { Loading } from "./components/Loading";
 
 // Define the Order interface
 interface Order {
@@ -236,6 +237,7 @@ function App() {
           element={<UploadSlip></UploadSlip>}
         ></Route>
         <Route path="/slip2" element={<UploadSlip2></UploadSlip2>}></Route>
+        <Route path='/load' element={<Loading></Loading>}></Route>
       </Routes>
     </div>
   );
