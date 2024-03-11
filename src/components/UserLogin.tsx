@@ -15,9 +15,10 @@ export const UserLogin = () => {
         const profile = await liff.getProfile();
         const userLineData = {
           userLineId: profile.userId,
+          userLineName: profile.displayName,
         };
         localStorage.setItem("userLineData", JSON.stringify(userLineData));
-        navigate('/load'); // Redirect to the desired page after login
+        navigate("/load"); // Redirect to the desired page after login
       }
     }
     initializeLIFF();
