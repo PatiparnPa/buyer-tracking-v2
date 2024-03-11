@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import liff from "@line/liff"; // Import LIFF library
 
 export const Loading = () => {
   const navigate = useNavigate();
@@ -11,6 +12,25 @@ export const Loading = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+        const initializeLIFF = async () => {
+          try {
+            await liff.init({ liffId: "2000210581-wLmA5Enp" }); // Replace with your LIFF ID
+            if (liff.isLoggedIn()) {
+              const profile = await liff.getProfile();
+              const userLineData = {
+                userLineId: profile.userId,
+                userLineName: profile.displayName,
+              };
+              localStorage.setItem("userLineData", JSON.stringify(userLineData));
+              navigate('/'); // Navigate to the desired page after saving user data
+            }
+          } catch (error) {
+            console.error("Error initializing LIFF:", error);
+          }
+        };
+
+        initializeLIFF();
+
         const userDataString = localStorage.getItem("userLineData");
         console.log("userdatastring", userDataString);
         if (userDataString) {
@@ -117,7 +137,7 @@ export const Loading = () => {
     };
 
     fetchUserData();
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="loading-container">
