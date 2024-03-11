@@ -1,14 +1,16 @@
 import TabBar from "./Tabbar";
 import Cart2 from "../assets/cart2.png";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Logout from "../assets/logout.jpg";
 import GoNext from "../assets/yeet.jpg";
 import React, { useEffect, useState } from 'react';
 import { UserName } from "./UserName";
+import liff from "@line/liff"; // Import LIFF library
 
 export const UserProfilePage = () => {
   const userId = '650bd1a00638ec52b189cb6e'
   const [userName, setUserName] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -29,7 +31,18 @@ export const UserProfilePage = () => {
   }, [userId]);
 
   const handleLogout = () => {
-    console.log('the logout button was click')
+    try {
+      // Remove access token from local storage
+      localStorage.removeItem("accessToken");
+      
+      // Logout from LINE
+      liff.logout();
+      
+      // Navigate to user login page
+      navigate("/userlogin");
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
   }
   return (
     <>
