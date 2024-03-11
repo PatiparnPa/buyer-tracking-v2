@@ -9,16 +9,20 @@ export const UserLogin = () => {
   useEffect(() => {
     // Initialize LIFF and check if the user is logged in
     async function initializeLIFF() {
-      await liff.init({ liffId: "2000210581-wLmA5Enp" }); // Replace with your LIFF ID
-      if (liff.isLoggedIn()) {
-        // User is already logged in, fetch user data and navigate to the desired page
-        const profile = await liff.getProfile();
-        const userLineData = {
-          userLineId: profile.userId,
-          userLineName: profile.displayName,
-        };
-        localStorage.setItem("userLineData", JSON.stringify(userLineData));
-        navigate('/load'); // Navigate to the desired page after saving user data
+      try {
+        await liff.init({ liffId: "2000210581-wLmA5Enp" }); // Replace with your LIFF ID
+        if (liff.isLoggedIn()) {
+          // User is already logged in, fetch user data and navigate to the desired page
+          const profile = await liff.getProfile();
+          const userLineData = {
+            userLineId: profile.userId,
+            userLineName: profile.displayName,
+          };
+          localStorage.setItem("userLineData", JSON.stringify(userLineData));
+          navigate('/load'); // Navigate to the desired page after saving user data
+        }
+      } catch (error) {
+        console.error("Error initializing LIFF:", error);
       }
     }
     initializeLIFF();
