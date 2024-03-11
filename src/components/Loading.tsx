@@ -12,8 +12,8 @@ export const Loading = () => {
     const fetchUserData = async () => {
       try {
         const userDataString = localStorage.getItem("userLineData");
+        console.log("userdatastring", userDataString);
         if (userDataString) {
-          console.log("userdatastring", userDataString);
           const userData = JSON.parse(userDataString);
           setUserLineData(userData);
 
