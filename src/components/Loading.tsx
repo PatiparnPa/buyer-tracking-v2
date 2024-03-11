@@ -117,7 +117,7 @@ export const Loading = () => {
     };
 
     fetchUserData();
-  }, [navigate]);
+  }, []);
 
   return (
     <div className="loading-container">
