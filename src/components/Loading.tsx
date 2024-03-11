@@ -21,8 +21,98 @@ export const Loading = () => {
           const response = await fetch(`https://order-api-patiparnpa.vercel.app/users/check/${userData.userLineId}`);
           if (response.ok) {
             console.log("User is found");
+            
+            // Grant access token to the user
+            const accessTokenResponse = await fetch("https://order-api-patiparnpa.vercel.app/auth/login", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ lineID: userData.userLineId }),
+            });
+
+            if (accessTokenResponse.ok) {
+              const accessTokenData = await accessTokenResponse.json();
+              localStorage.setItem("accessToken", accessTokenData.accessToken);
+              navigate("/");
+            } else {
+              throw new Error("Failed to fetch access token");
+            }
           } else if (response.status === 404) {
             console.log("User is not found");
+
+            // Create the user if not found
+            const createUserResponse = await fetch("https://order-api-patiparnpa.vercel.app/users/create", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                lineID: userData.userLineId,
+                name: userData.userLineName,
+                basketID: "",
+                favorite_productID: "",
+              }),
+            });
+
+            if (createUserResponse.ok) {
+              const createdUserData = await createUserResponse.json();
+              const userId = createdUserData._id;
+
+              // Create basket for the user
+              const createBasketResponse = await fetch("https://order-api-patiparnpa.vercel.app/baskets/create", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ userID: userId }),
+              });
+
+              if (createBasketResponse.ok) {
+                // Create favorite product for the user
+                const createFavoriteProductResponse = await fetch("https://order-api-patiparnpa.vercel.app/favorite_products/create", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ userID: userId }),
+                });
+
+                if (createFavoriteProductResponse.ok) {
+                  // Update user data with basket and favorite product IDs
+                  const createdBasketData = await createBasketResponse.json();
+                  const createdFavoriteProductData = await createFavoriteProductResponse.json();
+
+                  const updateUserResponse = await fetch(`https://order-api-patiparnpa.vercel.app/users/${userId}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      favorite_productID: createdFavoriteProductData._id,
+                      basketID: createdBasketData._id,
+                    }),
+                  });
+
+                  if (updateUserResponse.ok) {
+                    console.log("User data updated successfully");
+
+                    // Grant access token to the user
+                    const accessTokenResponse = await fetch("https://order-api-patiparnpa.vercel.app/auth/login", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ lineID: userData.userLineId }),
+                    });
+
+                    if (accessTokenResponse.ok) {
+                      const accessTokenData = await accessTokenResponse.json();
+                      localStorage.setItem("accessToken", accessTokenData.accessToken);
+                      navigate("/");
+                    } else {
+                      throw new Error("Failed to fetch access token");
+                    }
+                  } else {
+                    throw new Error("Failed to update user data");
+                  }
+                } else {
+                  throw new Error("Failed to create favorite product");
+                }
+              } else {
+                throw new Error("Failed to create basket");
+              }
+            } else {
+              throw new Error("Failed to create user");
+            }
           } else {
             throw new Error("Failed to fetch user data");
           }
