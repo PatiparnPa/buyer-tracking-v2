@@ -40,9 +40,9 @@ function App() {
   const navigate = useNavigate();
 
   const handleGoToOrderPage = (orderId: string, storeName: string) => {
-    closePopup()
+    closePopup();
     navigate(`/orderdetail/${orderId}`, {
-      state: { storeName: storeName }
+      state: { storeName: storeName },
     });
   };
 
@@ -92,7 +92,7 @@ function App() {
               console.error("StoreId is undefined");
             }
             console.log("data", data);
-            
+
             openPopup(
               <div>
                 <img src={Pot} style={{ width: "170px" }}></img>
@@ -117,7 +117,9 @@ function App() {
                 <br></br>
                 <button
                   className="to-order-page-button"
-                  onClick={() => handleGoToOrderPage(data[0]?._id, data[0]?.storeName)}
+                  onClick={() =>
+                    handleGoToOrderPage(data[0]?._id, data[0]?.storeName)
+                  }
                 >
                   Go to order Page
                 </button>
@@ -130,11 +132,7 @@ function App() {
       } catch (error) {
         console.error("Error fetching orders:", error);
       }
-
-      
     };
-
-    
 
     let intervalId = setInterval(fetchOrders, 1500000);
 
@@ -143,9 +141,6 @@ function App() {
     };
   }, [userId, openPopup]);
 
-  
- 
- 
   useEffect(() => {
     let isMounted = true;
 
