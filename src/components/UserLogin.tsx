@@ -18,7 +18,6 @@ export const UserLogin = () => {
           userLineName: profile.displayName,
         };
         localStorage.setItem("userLineData", JSON.stringify(userLineData));
-        navigate("/load"); // Redirect to the desired page after login
       }
     }
     initializeLIFF();
