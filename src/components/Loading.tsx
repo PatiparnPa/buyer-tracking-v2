@@ -13,7 +13,7 @@ export const Loading = () => {
 
   useEffect(() => {
     // Retrieve userData from localStorage
-    const userDataString = localStorage.getItem("userLineData");
+    const userDataString = sessionStorage.getItem("userLineData");
     console.log("userDataString:", userDataString);
 
     // Parse the userData JSON string to extract userId and displayName

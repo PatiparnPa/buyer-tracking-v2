@@ -17,13 +17,7 @@ export const UserLogin = () => {
           userLineId: profile.userId,
           userLineName: profile.displayName,
         };
-        if (await navigator.storage.persisted()) {
-          // Storage is persisted, so it's safe to use localStorage
-          localStorage.setItem("userLineData", JSON.stringify(userLineData));
-        } else {
-          // Storage is not persisted, handle it accordingly
-          console.warn("Storage is not persisted. User data may be cleared on browser close.");
-        }
+        sessionStorage.setItem("userLineData", JSON.stringify(userLineData));
 
       }
     }
