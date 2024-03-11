@@ -17,8 +17,8 @@ export const UserLogin = () => {
           userLineId: profile.userId,
           userLineName: profile.displayName,
         };
-        sessionStorage.setItem("userLineData", JSON.stringify(userLineData));
-
+        localStorage.setItem("userLineData", JSON.stringify(userLineData));
+        navigate('/load'); // Navigate to the desired page after saving user data
       }
     }
     initializeLIFF();
