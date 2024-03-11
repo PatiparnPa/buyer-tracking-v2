@@ -7,9 +7,6 @@ export const Loading = () => {
     userLineId: null,
     userLineName: null,
   });
-  const [accessToken, setAccessToken] = useState(null);
-  const [basketCreated, setBasketCreated] = useState(false);
-  const [favoriteProductCreated, setFavoriteProductCreated] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -19,46 +16,61 @@ export const Loading = () => {
           const userData = JSON.parse(userDataString);
           setUserLineData(userData);
 
-          const response = await fetch(`https://order-api-patiparnpa.vercel.app/users/check/${userData.userLineId}`);
+          const response = await fetch(
+            `https://order-api-patiparnpa.vercel.app/users/check/${userData.userLineId}`
+          );
           if (response.ok) {
             const data = await response.json();
             if (data.statusCode === 404 && data.error === "Not Found") {
               // User does not exist, create the user
-              const createUserResponse = await fetch("https://order-api-patiparnpa.vercel.app/users/create", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  lineID: userData.userLineId,
-                  name: userData.userLineName,
-                  basketID: "",
-                  favorite_productID: ""
-                })
-              });
+              const createUserResponse = await fetch(
+                "https://order-api-patiparnpa.vercel.app/users/create",
+                {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    lineID: userData.userLineId,
+                    name: userData.userLineName,
+                    basketID: "",
+                    favorite_productID: "",
+                  }),
+                }
+              );
               if (createUserResponse.ok) {
                 const createdUserData = await createUserResponse.json();
                 const userId = createdUserData._id;
-                const createBasketResponse = await fetch("https://order-api-patiparnpa.vercel.app/baskets/create", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ userID: userId })
-                });
-                if (createBasketResponse.ok) {
-                  const createdBasketData = await createBasketResponse.json();
-                  const createFavoriteProductResponse = await fetch("https://order-api-patiparnpa.vercel.app/favorite_products/create", {
+                const createBasketResponse = await fetch(
+                  "https://order-api-patiparnpa.vercel.app/baskets/create",
+                  {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ userID: userId })
-                  });
-                  if (createFavoriteProductResponse.ok) {
-                    const createdFavoriteProductData = await createFavoriteProductResponse.json();
-                    const updateUserResponse = await fetch(`https://order-api-patiparnpa.vercel.app/users/${userId}`, {
-                      method: "PUT",
+                    body: JSON.stringify({ userID: userId }),
+                  }
+                );
+                if (createBasketResponse.ok) {
+                  const createdBasketData = await createBasketResponse.json();
+                  const createFavoriteProductResponse = await fetch(
+                    "https://order-api-patiparnpa.vercel.app/favorite_products/create",
+                    {
+                      method: "POST",
                       headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({
-                        favorite_productID: createdFavoriteProductData._id,
-                        basketID: createdBasketData._id
-                      })
-                    });
+                      body: JSON.stringify({ userID: userId }),
+                    }
+                  );
+                  if (createFavoriteProductResponse.ok) {
+                    const createdFavoriteProductData =
+                      await createFavoriteProductResponse.json();
+                    const updateUserResponse = await fetch(
+                      `https://order-api-patiparnpa.vercel.app/users/${userId}`,
+                      {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          favorite_productID: createdFavoriteProductData._id,
+                          basketID: createdBasketData._id,
+                        }),
+                      }
+                    );
                     if (updateUserResponse.ok) {
                       navigate("/");
                     } else {
@@ -75,14 +87,20 @@ export const Loading = () => {
               }
             } else {
               // User exists, request access token
-              const accessTokenResponse = await fetch("https://order-api-patiparnpa.vercel.app/auth/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ lineID: userData.userLineId })
-              });
+              const accessTokenResponse = await fetch(
+                "https://order-api-patiparnpa.vercel.app/auth/login",
+                {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ lineID: userData.userLineId }),
+                }
+              );
               if (accessTokenResponse.ok) {
                 const accessTokenData = await accessTokenResponse.json();
-                localStorage.setItem("accessToken", accessTokenData.accessToken);
+                localStorage.setItem(
+                  "accessToken",
+                  accessTokenData.accessToken
+                );
                 navigate("/");
               } else {
                 throw new Error("Failed to fetch access token");
@@ -99,7 +117,6 @@ export const Loading = () => {
 
     fetchUserData();
   }, [navigate]);
-
 
   return (
     <div className="loading-container">
