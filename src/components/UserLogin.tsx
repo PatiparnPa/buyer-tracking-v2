@@ -25,7 +25,6 @@ export const UserLogin = () => {
           console.warn("Storage is not persisted. User data may be cleared on browser close.");
         }
 
-        navigate('/load');
       }
     }
     initializeLIFF();
