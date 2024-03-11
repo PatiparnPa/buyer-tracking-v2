@@ -16,6 +16,19 @@ export const Loading = () => {
       if (userDataString) {
         const userData = JSON.parse(userDataString);
         setUserLineData(userData);
+
+        try {
+          const response = await fetch(`https://order-api-patiparnpa.vercel.app/users/check/${userData.userLineId}`);
+          if (response.ok) {
+            console.log("User is found");
+          } else if (response.status === 404) {
+            console.log("User is not found");
+          } else {
+            throw new Error("Failed to fetch user data");
+          }
+        } catch (error) {
+          console.error("Error checking user existence:", error);
+        }
       }
     };
 
