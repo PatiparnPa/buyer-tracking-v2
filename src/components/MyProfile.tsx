@@ -69,7 +69,6 @@ export const UserProfilePage = () => {
 
       // Navigate to user login page
       console.log("the logout is success");
-      navigate("/");
     } catch (error) {
       console.error("Error during logout:", error);
     }
