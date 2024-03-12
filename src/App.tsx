@@ -22,8 +22,7 @@ import { usePopup } from "./components/PopupContext";
 import Pot from "./assets/pot-removebg-preview.png";
 import { useNavigate } from "react-router-dom";
 import { Loading } from "./components/Loading";
-import { jwtDecode } from "jwt-decode";
-import ProtectedRoute from './ProtectedRoute';
+import AuthenticatedRoute from "./AuthenticatedRoute";
 
 // Define the Order interface
 interface Order {
@@ -36,7 +35,7 @@ interface Order {
 }
 
 function App() {
-  const isAuthenticated = true; // Replace with your authentication logic
+  const isAuthenticated = !!localStorage.getItem('accessToken');
   const authenticationPath = '/userlogin'; // Replace with your authentication path
   const userId = "650bd1a00638ec52b189cb6e";
   const { isPopupOpen, openPopup, closePopup } = usePopup();
@@ -139,7 +138,7 @@ function App() {
       }
     };
 
-    let intervalId = setInterval(fetchOrders, 1500000);
+    let intervalId = setInterval(fetchOrders, 30000);
 
     return () => {
       clearInterval(intervalId);
@@ -151,7 +150,7 @@ function App() {
       <GlobalStyles></GlobalStyles>
       {isPopupOpen && <PopupComponent onClose={closePopup} />}
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <AuthenticatedRoute isAuthenticated={isAuthenticated} authenticationPath={authenticationPath} path="/" element={<HomePage />} />
         <Route path="/order" element={<OrderPage />} />
         <Route path="/profile" element={<UserProfilePage></UserProfilePage>} />
         <Route path="/menufea1/:storeId" element={<SelectMenuFeature />} />
