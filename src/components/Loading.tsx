@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCookies } from 'react-cookie';
 import liff from "@line/liff"; // Import LIFF library
 
 export const Loading = () => {
@@ -8,6 +9,8 @@ export const Loading = () => {
     userLineId: null,
     userLineName: null,
   });
+
+  const [cookies, setCookie] = useCookies(['accessToken']);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -32,11 +35,10 @@ export const Loading = () => {
             if (accessTokenResponse.ok) {
               try {
                 const accessTokenData = await accessTokenResponse.json();
-                await localStorage.setItem("accessToken", accessTokenData.accessToken);
+                setCookie('accessToken', accessTokenData.accessToken, { path: '/' });
                 console.log('accessTokenData:', accessTokenData);
                 
-                // Check if access token is stored properly
-                console.log('Stored access token:', localStorage.getItem("accessToken"));
+                console.log('Stored access token:', cookies.accessToken);
             
                 // Delay the navigation until after the access token is saved
                 //navigate("/");
