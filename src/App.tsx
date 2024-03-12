@@ -22,6 +22,7 @@ import { usePopup } from "./components/PopupContext";
 import Pot from "./assets/pot-removebg-preview.png";
 import { useNavigate } from "react-router-dom";
 import { Loading } from "./components/Loading";
+import { jwtDecode } from "jwt-decode";
 
 // Define the Order interface
 interface Order {
@@ -45,6 +46,21 @@ function App() {
       state: { storeName: storeName },
     });
   };
+
+  useEffect(() => {
+    // Check if access token exists in local storage
+    const accessToken = localStorage.getItem("accessToken");
+
+    if (accessToken) {
+      // Access token exists, perform actions accordingly
+      // For example, decode the token to extract information if needed
+      const decodedToken = jwtDecode(accessToken);
+      console.log(decodedToken);
+    } else {
+      // Access token doesn't exist, perform alternative actions
+      console.log("Access token not found");
+    }
+  }, []);
 
   useEffect(() => {
     const fetchOrders = async () => {

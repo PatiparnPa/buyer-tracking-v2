@@ -46,11 +46,11 @@ export const UserProfilePage = () => {
     try {
       // Remove access token from local storage
       localStorage.removeItem("accessToken");
-      
       // Logout from LINE
       liff.logout();
       
       // Navigate to user login page
+      console.log('the logout is success')
       navigate("/userlogin");
     } catch (error) {
       console.error("Error during logout:", error);
