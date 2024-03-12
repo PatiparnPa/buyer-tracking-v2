@@ -21,7 +21,10 @@ export const UserProfilePage = () => {
 
   const initializeLiff = async () => {
     try {
-      await liff.init({ liffId: "2000210581-wLmA5Enp" });
+      // Check if the web app is being accessed within the LINE app environment
+      if (liff.isInClient()) {
+        await liff.init({ liffId: "2000210581-wLmA5Enp" });
+      }
     } catch (error) {
       console.error("LIFF initialization failed:", error);
       // Handle the initialization error here, such as displaying an error message
@@ -34,7 +37,6 @@ export const UserProfilePage = () => {
   useEffect(() => {
     initializeLiff();
   }, []);
-
 
 
   useEffect(() => {
