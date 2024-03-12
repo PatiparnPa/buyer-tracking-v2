@@ -35,7 +35,7 @@ interface Order {
 }
 
 function App() {
-  const isAuthenticated = !!localStorage.getItem('accessToken');
+  const isAuthenticated = true; // Replace with your authentication logic
   const authenticationPath = '/userlogin'; // Replace with your authentication path
   const userId = "650bd1a00638ec52b189cb6e";
   const { isPopupOpen, openPopup, closePopup } = usePopup();
@@ -48,6 +48,13 @@ function App() {
       state: { storeName: storeName },
     });
   };
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
+      navigate('/userlogin');
+    }
+  }, [navigate]);
 
 
   useEffect(() => {
@@ -150,7 +157,7 @@ function App() {
       <GlobalStyles></GlobalStyles>
       {isPopupOpen && <PopupComponent onClose={closePopup} />}
       <Routes>
-        <AuthenticatedRoute isAuthenticated={isAuthenticated} authenticationPath={authenticationPath} path="/" element={<HomePage />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/order" element={<OrderPage />} />
         <Route path="/profile" element={<UserProfilePage></UserProfilePage>} />
         <Route path="/menufea1/:storeId" element={<SelectMenuFeature />} />
