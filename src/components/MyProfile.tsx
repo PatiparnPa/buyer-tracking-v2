@@ -19,6 +19,20 @@ export const UserProfilePage = () => {
     }
   }, [navigate]);
 
+  const initializeLiff = async () => {
+    try {
+      await liff.init({ liffId: "2000210581-wLmA5Enp" });
+    } catch (error) {
+      console.error("LIFF initialization failed:", error);
+    }
+  };
+
+  useEffect(() => {
+    initializeLiff();
+  }, []);
+
+
+
   useEffect(() => {
     const fetchUserName = async () => {
       try {
@@ -44,6 +58,8 @@ export const UserProfilePage = () => {
     try {
       // Remove access token from local storage
       localStorage.removeItem("accessToken");
+      // Logout from LINE
+      liff.logout();
 
       // Navigate to user login page
       console.log("the logout is success");
