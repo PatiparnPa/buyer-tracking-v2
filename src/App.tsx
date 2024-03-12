@@ -23,6 +23,7 @@ import Pot from "./assets/pot-removebg-preview.png";
 import { useNavigate } from "react-router-dom";
 import { Loading } from "./components/Loading";
 import { jwtDecode } from "jwt-decode";
+import ProtectedRoute from './ProtectedRoute';
 
 // Define the Order interface
 interface Order {
@@ -35,6 +36,8 @@ interface Order {
 }
 
 function App() {
+  const isAuthenticated = true; // Replace with your authentication logic
+  const authenticationPath = '/userlogin'; // Replace with your authentication path
   const userId = "650bd1a00638ec52b189cb6e";
   const { isPopupOpen, openPopup, closePopup } = usePopup();
 
@@ -48,19 +51,11 @@ function App() {
   };
 
   useEffect(() => {
-    // Check if access token exists in local storage
-    const accessToken = localStorage.getItem("accessToken");
-
-    if (accessToken) {
-      // Access token exists, perform actions accordingly
-      // For example, decode the token to extract information if needed
-      const decodedToken = jwtDecode(accessToken);
-      console.log(decodedToken);
-    } else {
-      // Access token doesn't exist, perform alternative actions
-      console.log("Access token not found");
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
+      navigate('/userlogin');
     }
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     const fetchOrders = async () => {
