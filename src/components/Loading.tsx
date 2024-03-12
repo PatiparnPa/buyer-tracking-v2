@@ -33,7 +33,7 @@ export const Loading = () => {
               try {
                 const accessTokenData = await accessTokenResponse.json();
 
-                await localStorage.setItem("accessToken", accessTokenData);
+                await localStorage.setItem("accessToken", accessTokenData.accessToken);
 
             
 
