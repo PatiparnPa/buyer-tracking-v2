@@ -51,6 +51,8 @@ export const HomePage = () => {
     const accessToken = localStorage.getItem('accessToken');
     if (!accessToken) {
       navigate('/userlogin');
+    } else {
+      console.log('Access Token:', accessToken);
     }
   }, [navigate]);
   // Function to add a menu item to the cart
