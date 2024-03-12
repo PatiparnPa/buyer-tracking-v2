@@ -10,8 +10,6 @@ export const Loading = () => {
     userLineName: null,
   });
 
-  const [cookies, setCookie] = useCookies(['accessToken']);
-
   useEffect(() => {
     const fetchUserData = async () => {
       const userDataString = localStorage.getItem("userLineData");
@@ -35,7 +33,11 @@ export const Loading = () => {
             if (accessTokenResponse.ok) {
               try {
                 const accessTokenData = await accessTokenResponse.json();
+
                 await localStorage.setItem("accessToken", accessTokenData);
+
+            
+
                 console.log('accessTokenData:', accessTokenData);
                 
                 // Check if access token is stored properly
