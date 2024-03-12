@@ -40,7 +40,7 @@ export const Loading = () => {
             if (accessTokenResponse.ok) {
               try {
                 const accessTokenData = await accessTokenResponse.json();
-                setCookie('accessToken', await accessTokenResponse.json(), { path: '/' });
+                setCookie('accessToken', accessTokenData.accessToken, { path: '/' });
                 console.log('accessTokenData:', accessTokenData);
                 
                 // Now TypeScript knows that cookies.accessToken is a string
