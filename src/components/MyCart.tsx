@@ -44,6 +44,13 @@ export const MyCart = () => {
     setIsManageMode(!isManageMode);
   };
 
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
+      navigate('/userlogin');
+    }
+  }, [navigate]);
+
   const manageButtonStyles = {
     background: "none",
     border: "none",
