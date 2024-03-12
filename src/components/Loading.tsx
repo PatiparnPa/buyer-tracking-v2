@@ -31,7 +31,7 @@ export const Loading = () => {
 
             if (accessTokenResponse.ok) {
               const accessTokenData = await accessTokenResponse.json();
-              localStorage.setItem("accessToken", accessTokenData.accessToken);
+              await localStorage.setItem("accessToken", accessTokenData.accessToken);
               navigate("/");
             } else {
               throw new Error("Failed to fetch access token");
@@ -97,7 +97,7 @@ export const Loading = () => {
 
                     if (accessTokenResponse.ok) {
                       const accessTokenData = await accessTokenResponse.json();
-                      localStorage.setItem("accessToken", accessTokenData.accessToken);
+                      await localStorage.setItem("accessToken", accessTokenData.accessToken);
                       navigate("/");
                     } else {
                       throw new Error("Failed to fetch access token");
