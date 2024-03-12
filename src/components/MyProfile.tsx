@@ -12,6 +12,14 @@ export const UserProfilePage = () => {
   const [userName, setUserName] = useState('');
   const navigate = useNavigate();
 
+  const initializeLiff = async () => {
+    try {
+      await liff.init({ liffId: "2000210581-wLmA5Enp" });
+    } catch (error) {
+      console.error("LIFF initialization failed:", error);
+    }
+  };
+
   useEffect(() => {
     const fetchUserName = async () => {
       try {
@@ -29,6 +37,10 @@ export const UserProfilePage = () => {
 
     fetchUserName();
   }, [userId]);
+
+  useEffect(() => {
+    initializeLiff();
+  }, []);
 
   const handleLogout = () => {
     try {
