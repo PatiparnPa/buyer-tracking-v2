@@ -3,13 +3,15 @@ import { usePopup } from "./PopupContext";
 import PopupComponent from "./PopupComponent";
 import { useState } from "react";
 import React, { useEffect } from "react";
+import { useUser } from './UserContext';
 
 const AnyComponent: React.FC = () => {
   const { isPopupOpen, openPopup, closePopup } = usePopup();
-  const productId = "65c0c98c986e8fc8b8cf1426";
-  const basketId = "65d4121ae396273d0d187330";
   const orderId = "65d312076aea7dd9f09f9534";
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const { userId, basketId, favoriteId } = useUser();
+
+  console.log(userId, basketId, favoriteId);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;

@@ -16,7 +16,7 @@ const MyAppBar = () => {
       <h5 style={{ marginTop: "3%", marginLeft: "3%", fontWeight: "500" }}>
         <Link
           style={{ textDecoration: "none", color: "inherit" }}
-          to="/userlogin"
+          to="/yee"
         >
           IT CAFETERIA
         </Link>

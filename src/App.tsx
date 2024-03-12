@@ -35,8 +35,6 @@ interface Order {
 }
 
 function App() {
-  const isAuthenticated = true; // Replace with your authentication logic
-  const authenticationPath = '/userlogin'; // Replace with your authentication path
   const userId = "650bd1a00638ec52b189cb6e";
   const { isPopupOpen, openPopup, closePopup } = usePopup();
 
