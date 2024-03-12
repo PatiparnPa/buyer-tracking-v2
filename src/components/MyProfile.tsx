@@ -13,11 +13,29 @@ export const UserProfilePage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = localStorage.getItem('accessToken');
     if (!accessToken) {
-      navigate("/userlogin");
+      navigate('/userlogin');
     }
   }, [navigate]);
+
+  const initializeLiff = async () => {
+    try {
+      await liff.init({ liffId: "2000210581-wLmA5Enp" });
+    } catch (error) {
+      console.error("LIFF initialization failed:", error);
+      // Handle the initialization error here, such as displaying an error message
+      return; // Exit the function to prevent further execution
+    }
+  
+    // Proceed with any other initialization steps if LIFF initialization succeeds
+  };
+  
+  useEffect(() => {
+    initializeLiff();
+  }, []);
+
+
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -39,20 +57,13 @@ export const UserProfilePage = () => {
     fetchUserName();
   }, [userId]);
 
-  const handleLogout = async () => {
+
+  const handleLogout = () => {
     try {
       // Remove access token from local storage
       localStorage.removeItem("accessToken");
-
-      // Initialize LIFF
-      try {
-        await liff.init({ liffId: "2000210581-wLmA5Enp" });
-      } catch (error) {
-        console.error("LIFF initialization failed:", error);
-      }
-
       // Logout from LINE
-      await liff.logout();
+      liff.logout();
 
       // Navigate to user login page
       console.log("the logout is success");
