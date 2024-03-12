@@ -15,6 +15,7 @@ export const UserProfilePage = () => {
   const initializeLiff = async () => {
     try {
       await liff.init({ liffId: "2000210581-wLmA5Enp" });
+      console.log('yee');
     } catch (error) {
       console.error("LIFF initialization failed:", error);
     }
