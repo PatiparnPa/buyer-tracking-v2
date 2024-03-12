@@ -3,19 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { useCookies } from 'react-cookie';
 import liff from "@line/liff"; // Import LIFF library
 
-// Define a type for your cookie data
-interface AuthCookie {
-  accessToken: string;
-}
-
 export const Loading = () => {
   const navigate = useNavigate();
   const [userLineData, setUserLineData] = useState({
     userLineId: null,
     userLineName: null,
   });
-
-  const [cookies, setCookie] = useCookies(['accessToken']);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -40,13 +33,18 @@ export const Loading = () => {
             if (accessTokenResponse.ok) {
               try {
                 const accessTokenData = await accessTokenResponse.json();
-                setCookie('accessToken', accessTokenData.accessToken, { path: '/' });
+
+                await localStorage.setItem("accessToken", accessTokenData);
+
+            
+
                 console.log('accessTokenData:', accessTokenData);
                 
-                // Now TypeScript knows that cookies.accessToken is a string
-                console.log('Stored access token:', cookies.accessToken);
-
-                //navigate('/');
+                // Check if access token is stored properly
+                console.log('Stored access token:', localStorage.getItem("accessToken"));
+            
+                // Delay the navigation until after the access token is saved
+                //navigate("/");
               } catch (error) {
                 console.error('Error saving access token:', error);
               }
