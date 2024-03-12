@@ -32,7 +32,11 @@ export const Loading = () => {
             if (accessTokenResponse.ok) {
               try {
                 const accessTokenData = await accessTokenResponse.json();
+
                 await localStorage.setItem("accessToken", accessTokenData);
+
+            
+
                 console.log('accessTokenData:', accessTokenData);
                 
                 // Check if access token is stored properly
