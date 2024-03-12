@@ -46,6 +46,8 @@ export const HomePage = () => {
   const [favoriteFoods, setFavoriteFoods] = useState<MenuItem[]>([]);
   const userId = '650bd1a00638ec52b189cb6e'
   const basketId = '65d41851de12ac5fdff1066c'
+
+
   // Function to add a menu item to the cart
 const addToCart = async (menuItem: MenuItem) => {
   try {
