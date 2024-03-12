@@ -1,62 +1,50 @@
 import TabBar from "./Tabbar";
 import Cart2 from "../assets/cart2.png";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 import Logout from "../assets/logout.jpg";
 import GoNext from "../assets/yeet.jpg";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { UserName } from "./UserName";
 import liff from "@line/liff"; // Import LIFF library
 
 export const UserProfilePage = () => {
-  const userId = '650bd1a00638ec52b189cb6e'
-  const [userName, setUserName] = useState('');
+  const userId = "650bd1a00638ec52b189cb6e";
+  const [userName, setUserName] = useState("");
   const navigate = useNavigate();
-
-  const initializeLiff = async () => {
-    try {
-      await liff.init({ liffId: "2000210581-wLmA5Enp" });
-      console.log('yee');
-    } catch (error) {
-      console.error("LIFF initialization failed:", error);
-    }
-  };
 
   useEffect(() => {
     const fetchUserName = async () => {
       try {
-        const response = await fetch(`https://order-api-patiparnpa.vercel.app/users/${userId}`);
+        const response = await fetch(
+          `https://order-api-patiparnpa.vercel.app/users/${userId}`
+        );
         if (response.ok) {
           const userData = await response.json();
           setUserName(userData.name);
         } else {
-          console.error('Failed to fetch user name');
+          console.error("Failed to fetch user name");
         }
       } catch (error) {
-        console.error('Error fetching user name:', error);
+        console.error("Error fetching user name:", error);
       }
     };
 
     fetchUserName();
   }, [userId]);
 
-  useEffect(() => {
-    initializeLiff();
-  }, []);
 
   const handleLogout = () => {
     try {
       // Remove access token from local storage
       localStorage.removeItem("accessToken");
-      // Logout from LINE
-      liff.logout();
-      
+
       // Navigate to user login page
-      console.log('the logout is success')
+      console.log("the logout is success");
       navigate("/userlogin");
     } catch (error) {
       console.error("Error during logout:", error);
     }
-  }
+  };
   return (
     <>
       <div
@@ -85,21 +73,50 @@ export const UserProfilePage = () => {
         </div>
       </div>
       <div className="user-profile-container">
-        <p style={{fontSize:'20px', fontWeight:'bold', padding:'20px', paddingBottom:'10px', fontFamily:'prompt'}}>Personal Information</p>
-        <div className="profile-item" style={{alignItems:'center'}}>
+        <p
+          style={{
+            fontSize: "20px",
+            fontWeight: "bold",
+            padding: "20px",
+            paddingBottom: "10px",
+            fontFamily: "prompt",
+          }}
+        >
+          Personal Information
+        </p>
+        <div className="profile-item" style={{ alignItems: "center" }}>
           <div className="label">Display Name</div>
-          <Link to='/name' style={{textDecoration:'none'}}><div style={{fontSize:'18px'}}>{userName}</div></Link>
+          <Link to="/name" style={{ textDecoration: "none" }}>
+            <div style={{ fontSize: "18px" }}>{userName}</div>
+          </Link>
         </div>
         <div className="profile-item">
           <div className="label">Edit Favorite Menu</div>
-          <Link to='/favmenu' className="link"><img src={GoNext} alt="link" style={{width:'30px', height:'30px'}}></img></Link>
+          <Link to="/favmenu" className="link">
+            <img
+              src={GoNext}
+              alt="link"
+              style={{ width: "30px", height: "30px" }}
+            ></img>
+          </Link>
         </div>
-        <div className="profile-item" style={{alignItems:'center'}}>
+        <div className="profile-item" style={{ alignItems: "center" }}>
           <div className="label">History Order</div>
-          <Link to='/order' className="link"><img src={GoNext} alt="link" style={{width:'30px', height:'30px'}}></img></Link>
+          <Link to="/order" className="link">
+            <img
+              src={GoNext}
+              alt="link"
+              style={{ width: "30px", height: "30px" }}
+            ></img>
+          </Link>
         </div>
         <div className="profile-item">
-          <button onClick={handleLogout} style={{border:'none', background:'none', fontSize:'18px'}}><img src={Logout}></img>  Logout</button>
+          <button
+            onClick={handleLogout}
+            style={{ border: "none", background: "none", fontSize: "18px" }}
+          >
+            <img src={Logout}></img> Logout
+          </button>
         </div>
       </div>
       <TabBar></TabBar>
