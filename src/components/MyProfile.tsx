@@ -13,6 +13,13 @@ export const UserProfilePage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
+      navigate('/userlogin');
+    }
+  }, [navigate]);
+
+  useEffect(() => {
     const fetchUserName = async () => {
       try {
         const response = await fetch(
