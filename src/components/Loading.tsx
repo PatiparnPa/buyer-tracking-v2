@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from 'react-cookie';
 import liff from "@line/liff"; // Import LIFF library
 
 export const Loading = () => {
