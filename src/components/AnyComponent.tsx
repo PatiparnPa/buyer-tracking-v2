@@ -3,15 +3,17 @@ import { usePopup } from "./PopupContext";
 import PopupComponent from "./PopupComponent";
 import { useState } from "react";
 import React, { useEffect } from "react";
-import { useUser } from './UserContext';
+import { useUser } from "./UserContext";
 
 const AnyComponent: React.FC = () => {
   const { isPopupOpen, openPopup, closePopup } = usePopup();
   const orderId = "65d312076aea7dd9f09f9534";
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const { userId, basketId, favoriteId } = useUser();
+  const userData = useUser();
 
-  console.log(userId, basketId, favoriteId);
+  console.log("User ID:", userData.userId);
+  console.log("Basket ID:", userData.basketId);
+  console.log("Favorite ID:", userData.favoriteId);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -25,22 +27,22 @@ const AnyComponent: React.FC = () => {
       console.error("No image file selected");
       return;
     }
-  
+
     try {
       const formData = new FormData();
       formData.append("file", imageFile);
-  
+
       const response = await fetch(
         "https://order-api-patiparnpa.vercel.app/upload",
         {
           method: "POST",
           body: formData,
           headers: {
-            'Content-Type': 'multipart/form-data', // Set content type to multipart/form-data
+            "Content-Type": "multipart/form-data", // Set content type to multipart/form-data
           },
         }
       );
-  
+
       if (response.ok) {
         const data = await response.json();
         console.log("Upload success:", data);
@@ -73,9 +75,7 @@ const AnyComponent: React.FC = () => {
     }
   };
 
-  const customContent: JSX.Element = (
-    <div>yee</div>
-  );
+  const customContent: JSX.Element = <div>yee</div>;
 
   return (
     <div>
