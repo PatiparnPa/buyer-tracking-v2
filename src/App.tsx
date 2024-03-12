@@ -177,17 +177,6 @@ function App() {
         ></Route>
         <Route path="/slip2" element={<UploadSlip2></UploadSlip2>}></Route>
         <Route path="/load" element={<Loading></Loading>}></Route>
-        <Route
-          path="*"
-          element={
-            localStorage.getItem("accessToken") ? (
-              <Navigate to="/" />
-            ) : (
-              <Navigate to="/userlogin" />
-            )
-          }
-        />
-
       </Routes>
     </div>
   );
