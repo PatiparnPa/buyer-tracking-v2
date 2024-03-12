@@ -50,12 +50,6 @@ function App() {
     });
   };
 
-  useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
-    if (!accessToken) {
-      navigate('/userlogin');
-    }
-  }, [navigate]);
 
   useEffect(() => {
     const fetchOrders = async () => {
