@@ -151,8 +151,8 @@ function App() {
       {isPopupOpen && <PopupComponent onClose={closePopup} />}
       <Routes>
         <AuthenticatedRoute isAuthenticated={isAuthenticated} authenticationPath={authenticationPath} path="/" element={<HomePage />} />
-        <Route path="/order" element={<OrderPage />} />
-        <Route path="/profile" element={<UserProfilePage></UserProfilePage>} />
+        <AuthenticatedRoute isAuthenticated={isAuthenticated} authenticationPath={authenticationPath} path="/order" element={<OrderPage />} />
+        <AuthenticatedRoute isAuthenticated={isAuthenticated} authenticationPath={authenticationPath} path="/profile" element={<UserProfilePage></UserProfilePage>} />
         <Route path="/menufea1/:storeId" element={<SelectMenuFeature />} />
         <Route path="/menufea2/:menuId" element={<SelectMenuFeature2 />} />
         <Route path="/userlogin" element={<UserLogin></UserLogin>}></Route>
