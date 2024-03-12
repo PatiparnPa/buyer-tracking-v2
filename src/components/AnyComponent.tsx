@@ -19,7 +19,7 @@ const AnyComponent: React.FC = () => {
   useEffect(() => {
     // Retrieve access token from local storage (or wherever it's stored)
     const accessToken = localStorage.getItem("accessToken");
-
+    console.log('accesstoken', accessToken);
     if (accessToken) {
       try {
         // Decode the access token
