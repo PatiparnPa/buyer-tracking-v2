@@ -32,10 +32,14 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         // Decode the access token
         const decodedToken: { [key: string]: any } = jwtDecode(accessToken);
         // Extract user-related data from the decoded token
-        const { userId, basketId, favoriteId } = decodedToken;
+        const { userId, basketID, favorite_productID } = decodedToken;
 
         // Update the user context with the extracted data
-        setUserData({ userId, basketId, favoriteId });
+        setUserData({
+          userId: userId,
+          basketId: basketID, // Ensure consistency with the interface property name
+          favoriteId: favorite_productID, // Ensure consistency with the interface property name
+        });
         console.log("UserData", userData);
       } catch (error) {
         console.error("Error decoding access token:", error);
