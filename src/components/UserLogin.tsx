@@ -19,7 +19,7 @@ export const UserLogin = () => {
             userLineName: profile.displayName,
           };
           localStorage.setItem("userLineData", JSON.stringify(userLineData));
-          navigate('/load'); // Navigate to the desired page after saving user data
+          navigate("/load"); // Navigate to the desired page after saving user data
         }
       } catch (error) {
         console.error("Error initializing LIFF:", error);
