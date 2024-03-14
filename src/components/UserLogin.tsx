@@ -42,7 +42,7 @@ export const UserLogin = () => {
         <p>Please Login with Line before start</p>
       </div>
       <button onClick={handleLogin} className="login-button">
-        Login with LINE
+        Login with LINE!
       </button>
     </div>
   );
